@@ -66,7 +66,7 @@ Development defaults are preserved for compatibility:
 
 - Staff ID: `ADMIN-001`
 - Email: `admin@iisat.edu.pk`
-- Password: `PresenceQR@123`
+- Password: `admin123`
 
 Change the password immediately after first login and set production values
 through environment variables before putting the system on the public web.
