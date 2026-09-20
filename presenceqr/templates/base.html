@@ -42,12 +42,13 @@
 <div class="app-shell">
 
 
-    <!-- =========================
+    <!-- =====================================================
          TOP NAVIGATION
-    ========================== -->
+    ====================================================== -->
 
     <header class="topbar">
 
+        <!-- BRAND -->
         <a
             class="brand"
             href="{{ url_for('main.home') }}"
@@ -73,7 +74,11 @@
         </a>
 
 
-        <nav>
+        <!-- =================================================
+             DESKTOP NAVIGATION
+        ================================================== -->
+
+        <nav class="desktop-nav">
 
             {% if session.get('teacher_id') %}
 
@@ -88,10 +93,21 @@
 
                 {% if teacher and teacher.is_admin %}
 
-                    <a href="{{ url_for('main.terms') }}">Terms</a>
-                    <a href="{{ url_for('main.teachers') }}">Teachers</a>
-                    <a href="{{ url_for('main.audit_logs') }}">Audit</a>
-                    <a href="{{ url_for('main.settings') }}">Settings</a>
+                    <a href="{{ url_for('main.terms') }}">
+                        Terms
+                    </a>
+
+                    <a href="{{ url_for('main.teachers') }}">
+                        Teachers
+                    </a>
+
+                    <a href="{{ url_for('main.audit_logs') }}">
+                        Audit
+                    </a>
+
+                    <a href="{{ url_for('main.settings') }}">
+                        Settings
+                    </a>
 
                 {% endif %}
 
@@ -144,13 +160,268 @@
 
         </nav>
 
+
+        <!-- =================================================
+             MOBILE HEADER ACTIONS
+        ================================================== -->
+
+        <div class="mobile-nav-actions">
+
+            <button
+                class="theme-btn mobile-theme-btn"
+                id="mobileThemeBtn"
+                type="button"
+                aria-label="Toggle light and dark theme"
+                title="Toggle theme"
+            >
+                ◐
+            </button>
+
+
+            <button
+                class="mobile-menu-btn"
+                id="mobileMenuBtn"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+                aria-controls="mobileNav"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
     </header>
 
 
+    <!-- =====================================================
+         MOBILE NAVIGATION DRAWER
+    ====================================================== -->
 
-    <!-- =========================
+    <div
+        class="mobile-nav-overlay"
+        id="mobileNavOverlay"
+    ></div>
+
+
+    <aside
+        class="mobile-nav"
+        id="mobileNav"
+        aria-hidden="true"
+    >
+
+        <div class="mobile-nav-head">
+
+            <div class="mobile-nav-brand">
+
+                <span class="mark">
+                    P
+                </span>
+
+                <div>
+
+                    <strong>
+                        IISAT QR
+                    </strong>
+
+                    <small>
+                        Department Platform
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="mobile-nav-close"
+                id="mobileNavClose"
+                type="button"
+                aria-label="Close navigation menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="mobile-nav-links">
+
+            {% if session.get('teacher_id') %}
+
+                <a
+                    href="{{ url_for('main.dashboard') }}"
+                    class="mobile-nav-link"
+                >
+                    <span class="mobile-nav-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('main.courses') }}"
+                    class="mobile-nav-link"
+                >
+                    <span class="mobile-nav-icon">
+                        ▦
+                    </span>
+
+                    <span>
+                        Courses
+                    </span>
+                </a>
+
+
+                {% if teacher and teacher.is_admin %}
+
+                    <div class="mobile-nav-section">
+                        Administration
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('main.terms') }}"
+                        class="mobile-nav-link"
+                    >
+                        <span class="mobile-nav-icon">
+                            ◫
+                        </span>
+
+                        <span>
+                            Academic Terms
+                        </span>
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('main.teachers') }}"
+                        class="mobile-nav-link"
+                    >
+                        <span class="mobile-nav-icon">
+                            ♟
+                        </span>
+
+                        <span>
+                            Teachers
+                        </span>
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('main.audit_logs') }}"
+                        class="mobile-nav-link"
+                    >
+                        <span class="mobile-nav-icon">
+                            ✓
+                        </span>
+
+                        <span>
+                            Audit Log
+                        </span>
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('main.settings') }}"
+                        class="mobile-nav-link"
+                    >
+                        <span class="mobile-nav-icon">
+                            ⚙
+                        </span>
+
+                        <span>
+                            Settings
+                        </span>
+                    </a>
+
+                {% endif %}
+
+
+                <div class="mobile-nav-section">
+                    Account
+                </div>
+
+
+                <a
+                    href="{{ url_for('main.profile') }}"
+                    class="mobile-nav-link"
+                >
+                    <span class="mobile-nav-icon">
+                        ◉
+                    </span>
+
+                    <span>
+                        Profile
+                    </span>
+                </a>
+
+
+                <form
+                    class="mobile-logout-form"
+                    method="post"
+                    action="{{ url_for('main.logout') }}"
+                >
+
+                    <button
+                        class="mobile-logout-btn"
+                        type="submit"
+                    >
+
+                        <span>
+                            Sign Out
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+            {% else %}
+
+                <a
+                    class="mobile-login-btn"
+                    href="{{ url_for('main.login') }}"
+                >
+                    Teacher Sign In →
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="mobile-nav-footer">
+
+            <strong>
+                IISAT QR
+            </strong>
+
+            <span>
+                Smart · Secure · Organized
+            </span>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
          MAIN CONTENT
-    ========================== -->
+    ====================================================== -->
 
     <main class="main-wrap">
 
@@ -174,9 +445,9 @@
 
 
 
-    <!-- =========================
+    <!-- =====================================================
          FOOTER
-    ========================== -->
+    ====================================================== -->
 
     <footer class="site-footer">
 
@@ -203,9 +474,211 @@
 </div>
 
 
+<!-- EXISTING APPLICATION JAVASCRIPT -->
 <script
     src="{{ url_for('static', filename='js/app.js') }}"
 ></script>
+
+
+<!-- =========================================================
+     MOBILE NAVIGATION JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuButton =
+        document.getElementById("mobileMenuBtn");
+
+    const closeButton =
+        document.getElementById("mobileNavClose");
+
+    const mobileNav =
+        document.getElementById("mobileNav");
+
+    const overlay =
+        document.getElementById("mobileNavOverlay");
+
+    const mobileThemeButton =
+        document.getElementById("mobileThemeBtn");
+
+    const desktopThemeButton =
+        document.getElementById("themeBtn");
+
+
+    /*
+     * Open mobile navigation
+     */
+    function openMobileMenu() {
+
+        document.body.classList.add(
+            "mobile-menu-open"
+        );
+
+        mobileNav.classList.add(
+            "is-open"
+        );
+
+        overlay.classList.add(
+            "is-visible"
+        );
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        mobileNav.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+    }
+
+
+    /*
+     * Close mobile navigation
+     */
+    function closeMobileMenu() {
+
+        document.body.classList.remove(
+            "mobile-menu-open"
+        );
+
+        mobileNav.classList.remove(
+            "is-open"
+        );
+
+        overlay.classList.remove(
+            "is-visible"
+        );
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        mobileNav.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
+
+    /*
+     * Menu button
+     */
+    if (menuButton) {
+
+        menuButton.addEventListener(
+            "click",
+            openMobileMenu
+        );
+
+    }
+
+
+    /*
+     * Close button
+     */
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeMobileMenu
+        );
+
+    }
+
+
+    /*
+     * Overlay click closes navigation
+     */
+    if (overlay) {
+
+        overlay.addEventListener(
+            "click",
+            closeMobileMenu
+        );
+
+    }
+
+
+    /*
+     * Close menu after clicking navigation link
+     */
+    document
+        .querySelectorAll(".mobile-nav-link")
+        .forEach(function (link) {
+
+            link.addEventListener(
+                "click",
+                closeMobileMenu
+            );
+
+        });
+
+
+    /*
+     * ESC key closes navigation
+     */
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+                closeMobileMenu();
+            }
+
+        }
+    );
+
+
+    /*
+     * Keep mobile and desktop theme buttons synchronized.
+     *
+     * Existing app.js already handles the main theme button.
+     * Mobile button simply triggers the same button so there
+     * remains only one theme implementation.
+     */
+    if (
+        mobileThemeButton &&
+        desktopThemeButton
+    ) {
+
+        mobileThemeButton.addEventListener(
+            "click",
+            function () {
+
+                desktopThemeButton.click();
+
+            }
+        );
+
+    }
+
+
+    /*
+     * If desktop breakpoint is reached while menu is open,
+     * automatically close the mobile drawer.
+     */
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (window.innerWidth > 900) {
+                closeMobileMenu();
+            }
+
+        }
+    );
+
+});
+
+</script>
+
 
 {% block scripts %}
 {% endblock %}
