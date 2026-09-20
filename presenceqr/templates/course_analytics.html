@@ -1,0 +1,502 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Analytics · {{ course.code }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+
+    <div>
+        <span class="eyebrow">
+            ATTENDANCE ANALYTICS
+        </span>
+
+        <h1>
+            {{ course.code }} · {{ course.name }}
+        </h1>
+
+        <p>
+            {{ course.academic_term.name if course.academic_term else 'No Term' }}
+            · {{ course.semester }}
+            · Section {{ course.section }}
+            · {{ course.students|length }} students
+            · {{ total_sessions }} sessions
+        </p>
+    </div>
+
+    <div class="head-actions">
+
+        <a
+            class="btn ghost"
+            href="{{ url_for('main.dashboard') }}"
+        >
+            ← Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- OVERALL ATTENDANCE -->
+<section class="panel">
+
+    <div class="analytics-top">
+
+        <div>
+
+            <span class="eyebrow">
+                COURSE OVERVIEW
+            </span>
+
+            <h2>
+                Overall Attendance
+            </h2>
+
+            <p>
+                Attendance performance based on the selected
+                course sessions and recorded student statuses.
+            </p>
+
+        </div>
+
+
+        <div
+            class="circle-progress"
+            data-progress="{{ overall_percentage }}"
+        >
+
+            <div>
+
+                <strong>
+                    {{ overall_percentage }}%
+                </strong>
+
+                <span>
+                    Overall
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SUMMARY STATS -->
+<div class="stats analytics-stats">
+
+    <article>
+
+        <small>
+            Total Sessions
+        </small>
+
+        <strong>
+            {{ total_sessions }}
+        </strong>
+
+        <span>
+            Sessions in selected period
+        </span>
+
+    </article>
+
+
+    <article>
+
+        <small>
+            Total Students
+        </small>
+
+        <strong>
+            {{ course.students|length }}
+        </strong>
+
+        <span>
+            Students currently enrolled
+        </span>
+
+    </article>
+
+
+    <article>
+
+        <small>
+            Present Records
+        </small>
+
+        <strong>
+            {{ overall_present }}
+        </strong>
+
+        <span>
+            Total present attendance entries
+        </span>
+
+    </article>
+
+
+    <article>
+
+        <small>
+            Absent Records
+        </small>
+
+        <strong>
+            {{ overall_absent }}
+        </strong>
+
+        <span>
+            Total absent attendance entries
+        </span>
+
+    </article>
+
+</div>
+
+
+<!-- FILTER -->
+<section class="panel">
+
+    <div class="panel-head">
+
+        <div>
+
+            <h2>
+                Attendance Period
+            </h2>
+
+            <p>
+                View overall or monthly attendance analytics.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <form
+        class="analytics-filter"
+        method="get"
+    >
+
+        <label>
+            Month
+
+            <select name="month">
+
+                <option value="">
+                    All Months
+                </option>
+
+                <option value="1" {% if month == 1 %}selected{% endif %}>
+                    January
+                </option>
+
+                <option value="2" {% if month == 2 %}selected{% endif %}>
+                    February
+                </option>
+
+                <option value="3" {% if month == 3 %}selected{% endif %}>
+                    March
+                </option>
+
+                <option value="4" {% if month == 4 %}selected{% endif %}>
+                    April
+                </option>
+
+                <option value="5" {% if month == 5 %}selected{% endif %}>
+                    May
+                </option>
+
+                <option value="6" {% if month == 6 %}selected{% endif %}>
+                    June
+                </option>
+
+                <option value="7" {% if month == 7 %}selected{% endif %}>
+                    July
+                </option>
+
+                <option value="8" {% if month == 8 %}selected{% endif %}>
+                    August
+                </option>
+
+                <option value="9" {% if month == 9 %}selected{% endif %}>
+                    September
+                </option>
+
+                <option value="10" {% if month == 10 %}selected{% endif %}>
+                    October
+                </option>
+
+                <option value="11" {% if month == 11 %}selected{% endif %}>
+                    November
+                </option>
+
+                <option value="12" {% if month == 12 %}selected{% endif %}>
+                    December
+                </option>
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Year
+
+            <input
+                type="number"
+                name="year"
+                value="{{ year or '' }}"
+                placeholder="2026"
+                min="2000"
+                max="2100"
+            >
+
+        </label>
+
+
+        <button
+            class="btn primary"
+            type="submit"
+        >
+            Apply Filter
+        </button>
+
+
+        <a
+            class="btn ghost"
+            href="{{ url_for(
+                'main.course_analytics',
+                course_id=course.id
+            ) }}"
+        >
+            Reset
+        </a>
+
+    </form>
+
+</section>
+
+
+<!-- STUDENT ATTENDANCE -->
+<section class="panel">
+
+    <div class="panel-head">
+
+        <div>
+
+            <h2>
+                Student Attendance
+            </h2>
+
+            <p>
+                Individual attendance percentage for every
+                student enrolled in this course.
+            </p>
+
+        </div>
+
+
+        <div class="head-actions">
+
+            <a
+                class="btn ghost"
+                href="{{ url_for(
+                    'main.export_analytics_excel',
+                    course_id=course.id,
+                    month=month,
+                    year=year
+                ) }}"
+            >
+                Export Excel
+            </a>
+
+
+            <a
+                class="btn ghost"
+                href="{{ url_for(
+                    'main.export_analytics_pdf',
+                    course_id=course.id,
+                    month=month,
+                    year=year
+                ) }}"
+            >
+                Export PDF
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table class="responsive-table">
+
+            <thead>
+
+                <tr>
+                    <th>Registration</th>
+                    <th>Student</th>
+                    <th>Total Classes</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Attendance</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for row in student_stats %}
+
+                <tr>
+
+                    <td data-label="Registration">
+                        {{ row.student.registration_no }}
+                    </td>
+
+
+                    <td data-label="Student">
+
+                        <a class="text-link" href="{{ url_for('main.student_detail', course_id=course.id, student_id=row.student.id) }}"><b>{{ row.student.name }}</b></a>
+
+                    </td>
+
+
+                    <td data-label="Total Classes">
+                        {{ row.total }}
+                    </td>
+
+
+                    <td data-label="Present">
+                        {{ row.present }}
+                    </td>
+
+
+                    <td data-label="Absent">
+                        {{ row.absent }}
+                    </td>
+
+
+                    <td data-label="Attendance">
+
+                        <div class="student-attendance-cell">
+
+                            <div class="attendance-value-row">
+
+                                <strong>
+                                    {{ row.percentage }}%
+                                </strong>
+
+
+                                {% if row.percentage >= attendance_threshold %}
+
+                                <span class="attendance-badge good">
+                                    Good
+                                </span>
+
+
+                                {% elif row.percentage >= (attendance_threshold - 15) %}
+
+                                <span class="attendance-badge warning">
+                                    Warning
+                                </span>
+
+
+                                {% else %}
+
+                                <span class="attendance-badge bad">
+                                    Low
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="attendance-progress">
+
+                                <span
+                                    data-progress="{{ row.percentage }}"
+                                    class="{% if row.percentage >= attendance_threshold %}good{% elif row.percentage >= (attendance_threshold - 15) %}warning{% else %}bad{% endif %}"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+
+                {% else %}
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="empty"
+                    >
+                        No attendance records are available
+                        for this period.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    document
+        .querySelectorAll("[data-progress]")
+        .forEach(function (element) {
+
+            const rawValue = parseFloat(
+                element.dataset.progress || "0"
+            );
+
+            const safeValue = Math.max(
+                0,
+                Math.min(100, rawValue)
+            );
+
+            if (
+                element.classList.contains(
+                    "circle-progress"
+                )
+            ) {
+                element.style.setProperty(
+                    "--value",
+                    safeValue
+                );
+            } else {
+                element.style.width =
+                    safeValue + "%";
+            }
+
+        });
+
+});
+</script>
+
+{% endblock %}

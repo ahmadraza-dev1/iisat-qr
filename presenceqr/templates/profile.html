@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile · IISAT QR{% endblock %}
+
+{% block content %}
+<div class="narrow">
+  <div class="page-head">
+    <div>
+      <span class="eyebrow">MY ACCOUNT</span>
+      <h1>Profile</h1>
+      <p>{{ teacher.staff_id }} · {{ teacher.email }}</p>
+    </div>
+  </div>
+
+  <section class="panel">
+    <form class="stack" method="post">
+      <label>
+        Name
+        <input name="name" value="{{ teacher.name }}" required>
+      </label>
+
+      <label>
+        Department
+        <input name="department" value="{{ teacher.department }}" required>
+      </label>
+
+      <label>
+        New password
+        <input
+          name="new_password"
+          type="password"
+          minlength="8"
+          placeholder="Leave blank to keep current"
+        >
+      </label>
+
+      <button class="btn primary">Save changes</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

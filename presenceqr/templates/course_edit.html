@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit {{ item.code }} · IISAT QR{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="eyebrow">COURSE MANAGEMENT</span>
+    <h1>Edit {{ item.code }}</h1>
+    <p>Update term, offering details and assigned teachers.</p>
+  </div>
+</div>
+
+<section class="panel">
+  <form class="grid-form" method="post">
+    <label>
+      Academic Term
+      <select name="academic_term_id" required>
+        {% for term in terms %}
+        <option value="{{ term.id }}" {% if item.academic_term_id == term.id %}selected{% endif %}>
+          {{ term.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>
+      Course code
+      <input name="code" value="{{ item.code }}" required>
+    </label>
+    <label>
+      Course name
+      <input name="name" value="{{ item.name }}" required>
+    </label>
+    <label>
+      Department
+      <input name="department" value="{{ item.department }}" required>
+    </label>
+    <label>
+      Semester
+      <input name="semester" value="{{ item.semester }}" required>
+    </label>
+    <label>
+      Section
+      <input name="section" value="{{ item.section }}" required>
+    </label>
+    <label>
+      Room
+      <input name="room" value="{{ item.room }}">
+    </label>
+
+    <label class="span2">
+      Assigned Teachers
+      <select name="teacher_ids" multiple size="7">
+        {% for t in teachers %}
+        <option value="{{ t.id }}" {% if t in item.teachers %}selected{% endif %}>
+          {{ t.staff_id }} — {{ t.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <div class="span2 row-actions">
+      <button class="btn primary">Save Changes</button>
+      <a class="btn ghost" href="{{ url_for('main.courses') }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

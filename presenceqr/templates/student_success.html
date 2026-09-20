@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Attendance Marked · IISAT QR{% endblock %}
+
+{% block content %}
+<div class="center-page">
+  <section class="auth-card student-card success">
+    <div class="success-check">✓</div>
+    <span class="eyebrow">
+      {{ 'ALREADY RECORDED' if duplicate else 'ATTENDANCE RECORDED' }}
+    </span>
+    <h1>{{ student.name }}</h1>
+    <p>{{ student.registration_no }}</p>
+
+    <div class="confirm">
+      <b>{{ item.course.code }} — {{ item.course.name }}</b>
+      <span>{{ item.topic or 'Regular Class' }} · Section {{ item.course.section }}</span>
+    </div>
+
+    <p class="privacy">
+      {{ 'Your attendance was already marked for this session.' if duplicate else 'You are marked Present for this session.' }}
+    </p>
+  </section>
+</div>
+{% endblock %}
