@@ -1,6 +1,6 @@
 """Local development entrypoint for VS Code."""
 
-from IISATQR import create_app
+from presenceqr import create_app
 
 
 app = create_app()
