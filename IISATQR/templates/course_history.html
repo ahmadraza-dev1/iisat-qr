@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}History · {{ course.code }}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="eyebrow">SESSION HISTORY</span>
+    <h1>{{ course.code }} · {{ course.name }}</h1>
+    <p>
+      {{ course.academic_term.name if course.academic_term else 'No Term' }}
+      · {{ course.semester }} · Section {{ course.section }}
+    </p>
+  </div>
+
+  <div class="head-actions">
+    <a class="btn ghost" href="{{ url_for('main.course_analytics', course_id=course.id) }}">
+      Analytics
+    </a>
+    <a class="btn ghost" href="{{ url_for('main.roster', course_id=course.id) }}">
+      Roster
+    </a>
+  </div>
+</div>
+
+<section class="panel">
+  <div class="table-wrap">
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Topic</th>
+          <th>Teacher</th>
+          <th>Status</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in sessions %}
+          {% set p = s.records|selectattr('status', 'equalto', 'PRESENT')|list|length %}
+          <tr>
+            <td>{{ s.started_at.strftime('%d %b %Y, %I:%M %p') }}</td>
+            <td>{{ s.topic or 'Regular Class' }}</td>
+            <td>{{ s.creator.name }}</td>
+            <td>
+              <span class="status {{ 'live' if s.active else 'closed' }}">
+                {{ 'Live' if s.active else 'Completed' }}
+              </span>
+            </td>
+            <td>{{ p }}</td>
+            <td>{{ s.records|length - p }}</td>
+            <td>
+              <a class="text-link" href="{{ url_for('main.session_live', session_id=s.id) }}">
+                Open →
+              </a>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="7" class="empty">No sessions recorded.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

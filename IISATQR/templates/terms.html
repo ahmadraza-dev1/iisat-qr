@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Academic Terms · IISAT QR{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="eyebrow">ACADEMIC STRUCTURE</span>
+    <h1>Academic Terms</h1>
+    <p>Create and manage university terms such as Fall 2026 or Spring 2027.</p>
+  </div>
+</div>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>Create Academic Term</h2>
+      <p>Example: Fall 2026 or Spring 2027.</p>
+    </div>
+  </div>
+
+  <form class="grid-form" method="post" action="{{ url_for('main.term_create') }}">
+    <label>
+      Term Name
+      <input name="name" required placeholder="Fall 2026">
+    </label>
+    <label>
+      Start Date
+      <input type="date" name="start_date">
+    </label>
+    <label>
+      End Date
+      <input type="date" name="end_date">
+    </label>
+    <div>
+      <button class="btn primary">Create Term</button>
+    </div>
+  </form>
+</section>
+
+<section class="panel">
+  <div class="table-wrap">
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Dates</th>
+          <th>Courses</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for term in terms %}
+        <tr>
+          <td><b>{{ term.name }}</b></td>
+          <td>{{ term.start_date or '—' }} → {{ term.end_date or '—' }}</td>
+          <td>{{ term.courses|length }}</td>
+          <td>
+            <span class="status {{ 'live' if term.is_active else 'closed' }}">
+              {{ 'Active' if term.is_active else 'Archived' }}
+            </span>
+          </td>
+          <td>
+            <form method="post" action="{{ url_for('main.term_toggle', term_id=term.id) }}">
+              <button class="btn ghost">
+                {{ 'Archive' if term.is_active else 'Restore' }}
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

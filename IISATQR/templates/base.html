@@ -1,0 +1,215 @@
+<!doctype html>
+
+<html lang="en" data-theme="light">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
+
+    <title>
+        {% block title %}
+        IISAT QR
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app.css') }}"
+    >
+
+    <script>
+        try {
+            document.documentElement.dataset.theme =
+                localStorage.getItem('theme') || 'light';
+        } catch (e) {}
+    </script>
+
+</head>
+
+
+<body>
+
+<div class="app-shell">
+
+
+    <!-- =========================
+         TOP NAVIGATION
+    ========================== -->
+
+    <header class="topbar">
+
+        <a
+            class="brand"
+            href="{{ url_for('main.home') }}"
+        >
+
+            <span class="mark">
+                P
+            </span>
+
+
+            <span class="brand-text">
+
+                <b>
+                    IISAT QR
+                </b>
+
+                <small>
+                    IISAT Department Attendance Platform
+                </small>
+
+            </span>
+
+        </a>
+
+
+        <nav>
+
+            {% if session.get('teacher_id') %}
+
+                <a href="{{ url_for('main.dashboard') }}">
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('main.courses') }}">
+                    Courses
+                </a>
+
+
+                {% if teacher and teacher.is_admin %}
+
+                    <a href="{{ url_for('main.terms') }}">Terms</a>
+                    <a href="{{ url_for('main.teachers') }}">Teachers</a>
+                    <a href="{{ url_for('main.audit_logs') }}">Audit</a>
+                    <a href="{{ url_for('main.settings') }}">Settings</a>
+
+                {% endif %}
+
+
+                <a href="{{ url_for('main.profile') }}">
+                    Profile
+                </a>
+
+            {% endif %}
+
+
+            <!-- THEME TOGGLE -->
+            <button
+                class="theme-btn"
+                id="themeBtn"
+                type="button"
+                aria-label="Toggle light and dark theme"
+                title="Toggle theme"
+            >
+                ◐
+            </button>
+
+
+            {% if session.get('teacher_id') %}
+
+                <form
+                    method="post"
+                    action="{{ url_for('main.logout') }}"
+                >
+
+                    <button
+                        class="nav-btn"
+                        type="submit"
+                    >
+                        Sign Out
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <a
+                    class="nav-btn"
+                    href="{{ url_for('main.login') }}"
+                >
+                    Teacher Sign In
+                </a>
+
+            {% endif %}
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="main-wrap">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% for category, message in messages %}
+
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endwith %}
+
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-brand">
+
+            <strong>
+                IISAT QR
+            </strong>
+
+            <span>
+                Term-based, auditable QR attendance for university departments.
+            </span>
+
+        </div>
+
+
+        <small>
+            Smart · Secure · Organized
+        </small>
+
+    </footer>
+
+
+</div>
+
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+
+</html>

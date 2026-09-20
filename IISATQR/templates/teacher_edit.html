@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Teacher · IISAT QR
+{% endblock %}
+
+{% block content %}
+
+<div class="narrow">
+
+    <div class="page-head">
+
+        <div>
+            <span class="eyebrow">
+                TEACHER MANAGEMENT
+            </span>
+
+            <h1>
+                Edit {{ item.name }}
+            </h1>
+
+            <p>
+                Update teacher details, account access,
+                password and assigned courses.
+            </p>
+        </div>
+
+        <a
+            class="btn ghost"
+            href="{{ url_for('main.teachers') }}"
+        >
+            ← Back
+        </a>
+
+    </div>
+
+
+    <section class="panel">
+
+        <form
+            class="grid-form"
+            method="post"
+        >
+
+            <!-- STAFF ID -->
+
+            <label>
+                Staff ID
+
+                <input
+                    name="staff_id"
+                    value="{{ item.staff_id }}"
+                    required
+                >
+            </label>
+
+
+            <!-- NAME -->
+
+            <label>
+                Full Name
+
+                <input
+                    name="name"
+                    value="{{ item.name }}"
+                    required
+                >
+            </label>
+
+
+            <!-- EMAIL -->
+
+            <label>
+                Email Address
+
+                <input
+                    name="email"
+                    type="email"
+                    value="{{ item.email }}"
+                    required
+                >
+            </label>
+
+
+            <!-- DEPARTMENT -->
+
+            <label>
+                Department
+
+                <input
+                    name="department"
+                    value="{{ item.department }}"
+                    required
+                >
+            </label>
+
+
+            <!-- PASSWORD -->
+
+            <label class="span2">
+                New Password
+
+                <input
+                    name="new_password"
+                    type="password"
+                    minlength="8"
+                    placeholder="Leave blank to keep current password"
+                >
+
+                <small>
+                    Enter a new password only if you want
+                    to reset this teacher's password.
+                </small>
+
+            </label>
+
+
+            <!-- COURSES -->
+
+            <label class="span2">
+
+                Assigned Courses
+
+                <select
+                    name="course_ids"
+                    multiple
+                    size="8"
+                >
+
+                    {% for course in courses %}
+
+                    <option
+                        value="{{ course.id }}"
+
+                        {% if course in item.courses %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ course.code }}
+                        —
+                        {{ course.name }}
+                        |
+                        Semester {{ course.semester }}
+                        |
+                        Section {{ course.section }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <small>
+                    Windows: hold CTRL and click to select
+                    multiple courses.
+                    <br>
+
+                    Mac: hold Command ⌘ and click.
+                </small>
+
+            </label>
+
+
+            <!-- PERMISSIONS -->
+
+            <div class="checks span2">
+
+                <label class="check">
+
+                    <input
+                        name="is_active"
+                        type="checkbox"
+
+                        {% if item.is_active %}
+                            checked
+                        {% endif %}
+                    >
+
+                    Active Account
+
+                </label>
+
+
+                <label class="check">
+
+                    <input
+                        name="is_admin"
+                        type="checkbox"
+
+                        {% if item.is_admin %}
+                            checked
+                        {% endif %}
+                    >
+
+                    Administrator
+
+                </label>
+
+            </div>
+
+
+            <!-- SAVE -->
+
+            <div class="span2">
+
+                <button
+                    class="btn primary"
+                    type="submit"
+                >
+                    Save Teacher
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}
