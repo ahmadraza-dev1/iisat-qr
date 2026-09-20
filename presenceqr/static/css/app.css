@@ -1888,3 +1888,387 @@ html[data-theme="dark"] .circle-progress {
     }
 }
 .soft-rule { border: 0; border-top: 1px solid var(--line); margin: 20px 0; }
+
+
+/* =========================================================
+   PROFESSIONAL MOBILE NAVIGATION
+   Added for IISAT QR responsive HOD / Teacher navigation.
+   Desktop navigation remains unchanged above 980px.
+========================================================= */
+
+.mobile-nav-actions,
+.mobile-nav,
+.mobile-nav-overlay {
+    display: none;
+}
+
+/* Prevent background scrolling while the drawer is open. */
+body.mobile-menu-open {
+    overflow: hidden;
+}
+
+/* Mobile header action group */
+.mobile-nav-actions {
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+/* Hamburger button */
+.mobile-menu-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    transition:
+        transform 0.18s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+    transform: translateY(-1px);
+}
+
+.mobile-menu-btn span {
+    width: 18px;
+    height: 2px;
+    display: block;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+/* Dimmed page overlay behind the drawer */
+.mobile-nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 89;
+    background: rgba(0, 0, 0, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.24s ease;
+    backdrop-filter: blur(2px);
+}
+
+.mobile-nav-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Slide-in navigation drawer */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 90;
+    width: min(360px, 88vw);
+    height: 100dvh;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border-left: 1px solid var(--line);
+    box-shadow: -24px 0 70px rgba(0, 0, 0, 0.18);
+    transform: translateX(105%);
+    visibility: hidden;
+    transition:
+        transform 0.26s ease,
+        visibility 0.26s ease;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.mobile-nav.is-open {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.mobile-nav-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+}
+
+.mobile-nav-brand {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-nav-brand .mark {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 12px;
+    font-size: 17px;
+}
+
+.mobile-nav-brand > div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.mobile-nav-brand strong {
+    font-size: 16px;
+    font-weight: 850;
+    letter-spacing: -0.025em;
+}
+
+.mobile-nav-brand small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.mobile-nav-close {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: var(--surface-2);
+    color: var(--ink);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.mobile-nav-links {
+    display: grid;
+    gap: 6px;
+    padding: 18px 0;
+}
+
+.mobile-nav-section {
+    margin: 13px 8px 5px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.mobile-nav-link {
+    min-height: 48px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid transparent;
+    border-radius: 13px;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 750;
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.mobile-nav-link:hover {
+    background: var(--surface-2);
+    border-color: var(--line);
+    transform: translateX(2px);
+}
+
+.mobile-nav-icon {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--surface-2);
+    font-size: 14px;
+}
+
+.mobile-logout-form {
+    margin-top: 8px;
+}
+
+.mobile-logout-btn,
+.mobile-login-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid var(--accent);
+    border-radius: 13px;
+    background: var(--accent);
+    color: var(--accent-text);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.mobile-nav-footer {
+    margin-top: auto;
+    padding-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px solid var(--line);
+}
+
+.mobile-nav-footer strong {
+    font-size: 13px;
+    font-weight: 850;
+}
+
+.mobile-nav-footer span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* Dark-mode overlay/drawer tuning */
+html[data-theme="dark"] .mobile-nav {
+    box-shadow: -24px 0 70px rgba(0, 0, 0, 0.48);
+}
+
+html[data-theme="dark"] .mobile-nav-overlay {
+    background: rgba(0, 0, 0, 0.58);
+}
+
+
+/* =========================================================
+   MOBILE / TABLET NAV BREAKPOINT
+========================================================= */
+
+@media (max-width: 980px) {
+
+    /*
+     * The original stylesheet hides only desktop nav links at
+     * this breakpoint. With the new mobile drawer we hide the
+     * complete desktop nav instead, avoiding duplicate theme /
+     * sign-out controls on phones and tablets.
+     */
+    .topbar .desktop-nav {
+        display: none !important;
+    }
+
+    .mobile-nav-actions {
+        display: flex;
+    }
+
+    .mobile-nav,
+    .mobile-nav-overlay {
+        display: flex;
+    }
+
+    .mobile-nav-overlay {
+        display: block;
+    }
+
+    .topbar {
+        gap: 14px;
+    }
+
+    .brand {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE NAV REFINEMENTS
+========================================================= */
+
+@media (max-width: 680px) {
+
+    .topbar {
+        min-height: 70px;
+        padding: 10px 12px;
+    }
+
+    .mobile-nav-actions {
+        gap: 6px;
+        flex: 0 0 auto;
+    }
+
+    .mobile-theme-btn,
+    .mobile-menu-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+    }
+
+    .mobile-menu-btn span {
+        width: 17px;
+    }
+
+    .mobile-nav {
+        width: min(340px, 92vw);
+        padding: 16px;
+    }
+
+    .mobile-nav-link {
+        min-height: 46px;
+    }
+
+    .mobile-nav-brand small {
+        display: block;
+    }
+
+    /*
+     * Keep the IISAT QR brand visible without allowing the
+     * header to overflow on narrow screens.
+     */
+    .topbar > .brand .brand-text {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .topbar > .brand .brand-text b {
+        white-space: nowrap;
+    }
+}
+
+
+/* Very narrow phones */
+@media (max-width: 390px) {
+
+    .topbar {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .topbar > .brand .mark {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+    }
+
+    .topbar > .brand .brand-text b {
+        font-size: 15px;
+    }
+
+    .mobile-theme-btn,
+    .mobile-menu-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .mobile-nav {
+        width: 94vw;
+    }
+}
